@@ -1,0 +1,10 @@
+**/*.png
+**/*.mp4
+**/*.data
+**/*.wasm
+**/build
+**/node_modules
+**/.vscode
+/libs
+/package.json
+/package-lock.json

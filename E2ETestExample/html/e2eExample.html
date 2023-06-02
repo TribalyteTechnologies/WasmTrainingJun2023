@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example E2E Test</title>
+</head>
+<body>
+        <ul>
+         <li>
+           <label for="name">Name: </label>
+           <input type="text" maxlength="15" id="name" name="userName">
+         </li>
+          <li>
+            <label for="lastname">Last Name: </label>
+            <input type="text" id="lastname" name="userLastname">
+          </li>
+         <li>
+           <label for="mail">Mail: </label>
+           <input type="email" id="mail" name="userMail">
+         </li>
+         <li>
+           <label for="message">Message: </label>
+           <input type="message" id="message" name="userMessage"></textarea>
+         </li>
+         <li>
+          <label for="return">Message Back: </label>
+          <input type="return" id="return"  name="returnMessage">
+        </li>
+        </ul>
+
+       <button id="sendbtn" onclick="sendMessage()">Send</button>
+
+       <script src="e2eExample.js"></script>
+       <script>
+        function sendMessage(){
+          var departamentIdVar = document.getElementById("departament");
+          var nameVar = document.querySelector("#name").value;
+          var lastnameVar = document.querySelector("#lastname").value;
+          var mailVar = document.querySelector("#mail").value;
+          var messageVar = document.querySelector("#message").value;
+
+          var instance = new Module["Message"]();
+          const messageItems = {name: nameVar, lastName: lastnameVar, mail: mailVar, message: messageVar};
+          instance["newMessage"](messageItems);
+          instance.delete();
+        }
+
+      </script>
+</body>
+</html>

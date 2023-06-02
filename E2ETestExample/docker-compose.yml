@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+
+    apache2:
+        image: httpd:2.4
+        container_name: apache2
+        volumes:
+        - ./html:/usr/local/apache2/htdocs/
+        networks:
+            e2enet:
+             aliases:
+                - apacheserver
+
+
+    e2etest:
+        image: cypress/included:12.11.0
+        environment:
+         - CYPRESS_environment=test
+        working_dir: /e2e 
+        container_name: e2etest
+        command: npx cypress run
+        depends_on:
+        - apache2
+        volumes:
+        - ./:/e2e
+        networks:
+            e2enet:
+             aliases:
+                - cypresstest
+
+networks:
+  e2enet:
+    driver: bridge
+    ipam:
+     driver: default

@@ -1,0 +1,6 @@
+*.json
+html/e2eTestThreadExample.js
+html/e2eTestThreadExample.worker.js
+cypress/fixtures
+cypress/screenshots
+cypress/videos

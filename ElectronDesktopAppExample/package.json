@@ -1,0 +1,27 @@
+{
+  "name": "electronappexample",
+  "version": "1.0.0",
+  "description": "electronappexample",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "exportApp": "electron-forge import; electron-forge make",
+    "electronForgeMake": "electron-forge make",
+    "make": "electron-forge make"
+  },
+  "author": "amelian",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.1.1",
+    "@electron-forge/maker-deb": "^6.1.1",
+    "@electron-forge/maker-rpm": "^6.1.1",
+    "@electron-forge/maker-squirrel": "^6.1.1",
+    "@electron-forge/maker-zip": "^6.1.1",
+    "electron": "^24.3.1"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
+  }
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Example Embind (C++ - Javascript)</title>
+</head>
+<body>
+        <ul>
+          <select id="departament">
+            <option>Tribalyte Tech</option>
+            <option>Tribalyte Ideas</option>
+          </select>
+         <li>
+           <label for="name">Name: </label>
+           <input type="text" maxlength="15" id="name" name="userName">
+         </li>
+          <li>
+            <label for="lastname">Last Name: </label>
+            <input type="text" id="lastname" name="userLastname">
+          </li>
+         <li>
+           <label for="age">Age: </label>
+           <input type="number" id="age" name="userAge">
+         </li>
+        </ul>
+
+       <button id="sendbtn" onclick="sendMessage()">Send</button>
+
+       <script src="build/advancedEmbindExample.js"></script>
+       <script src="helper.js"></script>
+
+</body>
+</html>

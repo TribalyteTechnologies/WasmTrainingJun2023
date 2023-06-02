@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electron example (Calculator)</title>
+</head>
+<body>
+  <ul>
+      <input type="number" step="0.01" id="firstNumber" name="firstNumber">
+      <select id="operation">
+        <option>+</option>
+        <option>-</option>
+        <option>*</option>
+        <option>/</option>
+      </select>
+      <input type="number" step="0.01" id="secondNumber" name="secondNumber">
+      <button onclick="calculateOperation()">Calculate</button>
+      <p>The result is: <span id="result">0</span></p>
+    </ul>
+</body>
+
+<script src="electronDesktopAppExample.js"></script>
+<script>
+  var resultOperationHtml = document.getElementById("result");
+
+ function calculateOperation(){
+   var firstNumber = document.querySelector("#firstNumber").value;
+   var secondNumber = document.querySelector("#secondNumber").value;
+   var operationId = document.getElementById("operation");
+   
+   var instance = new Module["Calculator"]();
+   const val1 = parseFloat(firstNumber);
+   const val2 = parseFloat(secondNumber);
+   var resultNum = 0;
+   switch (operationId.selectedIndex) {
+    case 0:
+      resultNum = instance["addNumbers"](val1, val2);
+      break;
+    case 1:
+      resultNum = instance["substractNumbers"](val1, val2);
+      break;
+    case 2:
+      resultNum = instance["multiplyNumbers"](val1, val2);
+      break;
+    case 3:
+      resultNum = instance["divideNumbers"](val1, val2);
+      break;
+    default:
+      // None
+      break;
+  }
+  resultOperationHtml.innerHTML = resultNum;
+  instance.delete();
+ }
+</script>
+
+</html>

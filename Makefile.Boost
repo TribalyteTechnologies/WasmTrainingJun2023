@@ -1,0 +1,46 @@
+ifeq ($(wildcard Makefile.Boost),)
+	include ../Makefile
+else
+	include Makefile
+endif
+
+EMSCRIPTEN_IMAGE = emscripten/emsdk:3.1.36
+CURRENT_NAME_DIR = $(shell basename $(CURRENT_DIR))
+BOOST_ALL_DIRS = $(filter Boost%, $(wildcard */))
+BOOST_ASIO_DIRS = BoostSocketExample/ BoostWebsocketExample/ BoostAlgorithmExample/
+BOOST_DIRS = $(filter-out $(BOOST_ASIO_DIRS), $(BOOST_ALL_DIRS))
+BOOST_LIBRARY_VERSION = 1.81.0
+BOOST_LIBRARY_VERSION_LOWBAR = $(subst .,_,$(BOOST_LIBRARY_VERSION))
+BOOST_ASIO_DIRS_WITHOUT_SLASH = $(subst /,,$(BOOST_ASIO_DIRS))
+LIBS_DIR = ../libs/
+LIB_BOOST_DIR = $(LIBS_DIR)boost_$(BOOST_LIBRARY_VERSION_LOWBAR)
+ZIP_BOOST = libBoost.tar.bz2
+INCLUDE_LIBRARIES += -I $(LIB_BOOST_DIR)
+PRUEBA = $(filter $(CURRENT_DIR), $(BOOST_ASIO_DIRS_WITHOUT_SLASH))
+
+compileBoost:
+	@docker run --rm -v $(PWD):/src -u $(USER_ID):$(GROUP_ID) $(EMSCRIPTEN_IMAGE) make -f Makefile.Boost emscriptenCompileBoost
+	@$(eval EMSCRIPTEN_IMAGE = emscripten/emsdk:3.1.28)
+	@docker run --rm -v $(PWD):/src -u $(USER_ID):$(GROUP_ID) $(EMSCRIPTEN_IMAGE) make -f Makefile.Boost emscriptenCompileBoostAsio
+
+emscriptenCompileBoost:
+	@$(foreach dir,$(BOOST_DIRS), ($(MAKE) compileBoostExample -C $(dir)) &&) :
+
+emscriptenCompileBoostAsio:
+	@$(foreach dir,$(BOOST_ASIO_DIRS), ($(MAKE) compileBoostExample -C $(dir)) &&) :
+
+cleanBoost:
+	@$(foreach dir,$(BOOST_ALL_DIRS),($(MAKE) cleanExample -C $(dir)) &&) :
+
+compileBoostExample: getBoostLibrary compileExample
+
+dockerCompileBoostExample: createBuildDir getBoostLibrary
+	@docker run --rm -v $(CURRENT_DIR)/../Makefile:/Makefile -v $(CURRENT_DIR)/../Makefile.Boost:/Makefile.Boost -v $(CURRENT_DIR)/../libs:/libs -v $(CURRENT_DIR):/src -u $(USER_ID):$(GROUP_ID) $(EMSCRIPTEN_IMAGE) make compileExample
+
+getBoostLibrary:
+	@if [ ! -d $(LIB_BOOST_DIR) ]; then \
+		$(MKDIR) -p $(LIBS_DIR); \
+		$(WGET) -O $(LIBS_DIR)$(ZIP_BOOST) -c 'http://sourceforge.net/projects/boost/files/boost/$(BOOST_LIBRARY_VERSION)/boost_$(BOOST_LIBRARY_VERSION_LOWBAR).tar.bz2/download'; \
+		$(TAR) -xjf $(LIBS_DIR)$(ZIP_BOOST) -C $(LIBS_DIR); \
+		$(RM) $(LIBS_DIR)$(ZIP_BOOST); \
+	fi

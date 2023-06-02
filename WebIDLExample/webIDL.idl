@@ -1,0 +1,5 @@
+interface Idlclass {
+  void Idlclass();
+  long getVal();
+  void setVal(long v);
+};

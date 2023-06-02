@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Experiment with WASM</title>
+        <!-- Call function addInt and then output the result to the console -->
+        <script type="module">
+            // Fetching the wasm module 
+            WebAssembly.instantiateStreaming(fetch('./build/unitTest.wasm'))
+            .then(obj => {
+                // Calling the function addInt and passing 10 + 2 as a parameter.
+                var result = obj.instance.exports.addInt(10,2);
+                console.log(result);
+            });
+        </script>
+    </head>
+    <body></body>
+</html>

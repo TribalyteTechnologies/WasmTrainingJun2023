@@ -1,0 +1,119 @@
+<!doctype html> 
+<html> 
+   <head> 
+      <meta charset="utf-8"> 
+      <title>WebAssembly C Demo</title>
+      <style>
+         div { 
+            font-size : 30px; text-align : center; color:orange; 
+         } 
+      </style>
+   </head>
+
+   <body>
+    <script async type="text/javascript" src="build/hello.js"></script>
+
+   <script> 
+
+   function subtractionWasm()
+   {
+      var a = document.querySelector("#number1").value;
+      var b = document.querySelector("#number2").value;
+      var result = _subtract(a,b);
+      document.getElementById("addresult").innerHTML=result;
+   }
+
+   function addWasm()
+   {    
+      var a = document.querySelector("#number1").value;
+      var b = document.querySelector("#number2").value;
+      var result = _add(a,b);
+      document.getElementById("addresult").innerHTML = result;
+   }
+
+
+
+   function getStringWasm()
+   {
+      var b = document.querySelector("#InputString").value;
+      const str = b;
+      const bufferLength = 40;
+
+      const ptr = _wasMalloc(str.length + 1);
+      const bufferPointer = _wasMalloc(bufferLength);
+  
+      stringToUTF8(str, ptr, str.length + 1);
+      _getString(ptr,bufferPointer,bufferLength );
+      var stringRead = UTF8ToString( bufferPointer, bufferLength+1);
+      document.getElementById("StringRead").innerHTML = stringRead;
+
+      _wasFree(bufferPointer);
+      _wasFree(ptr);
+   }
+
+
+
+   function simpleFunctionWasm()
+   {
+      var a = document.querySelector("#number1").value;
+      var b = document.querySelector("#number2").value;
+      var result = _javaScriptFunction(a,b);
+      document.getElementById("JsAdd").innerHTML = result;
+   }
+
+   function readFileWasm()
+   {
+   var result = _fileread();
+   }
+
+   </script>
+
+
+<table>
+   <tr>
+    <th>Number 1</th>
+    <th>Number 2</th>
+   </tr>
+   <tr>
+    <td><input type = "number" id="number1"></td>
+    <td><input type = "number" id="number2"></td>
+   </tr>
+   <tr>
+      <td>result</td>
+      <td><div id = "addresult"></div></td>  
+   </tr>
+   <tr>
+    <td><button onclick = "subtractionWasm()">Subtract</button></td>
+    <td><button onclick = "addWasm()">Add</button></td>
+   </tr>
+   <tr></tr>
+    <th>Enter String</th>
+   </tr>
+   <tr>
+    <td><input type = "text" id="InputString"></td>
+   </tr>
+   <tr>
+    <td>String:</td>
+    <td><div id = "StringRead"></div></td>  
+   </tr>
+   <tr>
+    <td><button onclick = "getStringWasm()">get string</button></td>
+   </tr>
+   <tr>
+    <th>Funcion JavaScript:</th>
+    <td><div id = "JSFunction"></div></td>  
+   </tr>
+   <tr>
+    <td><button onclick = "simpleFunctionWasm()">Call JSFunction</button></td>
+    <td><div id = "JsAdd"></div></td>  
+   </tr>
+    <th>File Read:</th>
+    <td><div id = "JSFileread"></div></td>  
+   </tr>
+   <tr>
+    <td><button onclick = "readFileWasm()">Read File</button></td>
+    <td><div id = "Fileread"></div></td>  
+   </tr>
+</table>
+</body>
+</html>
