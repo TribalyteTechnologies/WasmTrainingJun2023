@@ -10,6 +10,7 @@ SRCS_WASM = $(notdir $(patsubst %.cpp, %.wasm, $(SRCS)))
 SRCS_DEPENDENCIES =
 INCLUDE_LIBRARIES =
 BUILD_OUTPUT = $(SRCS_JS)
+CD = cd
 RM = rm -rf
 CP = cp
 MKDIR = mkdir
